@@ -19,7 +19,7 @@ int main()
 
     File* Cur = new File;
     string str;
-    string str2;
+
     for (;;) {
         Student* Current = new Student;
         File* Cur = new File;

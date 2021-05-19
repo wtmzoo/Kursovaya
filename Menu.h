@@ -9,10 +9,9 @@ using namespace std;
 int cnt = -1;
 
 
-int main_menu(char*);
+int main_menu(char* x[]);
 void programm_exit();
-int change_student_id(char*);
-int idIsValidInput();
+int change_studend_data_menu(char* x[]);
 
 char m1[] = { "1. Ввести данные студента\n" };
 char m2[] = { "2. Изменение данных студента по его id\n" };
@@ -59,10 +58,7 @@ int main_menu(char* x[]) {
 				return stoi(q); // возвращается пункт меню
 			}
 		}
-		catch (...)
-		{
-			cout << endl << "Ошибка, введите действительный пункт меню" << endl;
-		}
+		catch (...){}
 		
 	}
 }
@@ -84,10 +80,7 @@ int change_studend_data_menu(char* x[]) {
 				return stoi(q); // возвращается пункт меню
 			}
 		}
-		catch (...)
-		{
-			cout << endl << "Ошибка, введите действительный пункт меню" << endl;
-		}
+		catch (...){}
 
 	}
 }

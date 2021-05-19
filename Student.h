@@ -2,11 +2,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <algorithm>
 #include "File.h"
 #include "File_reader.h"
+#include "Utilities.h"
 
 
-// Добавить проверку на ввод имени с максимум 2 пробелами (Если меньше, то замена данных на NONE)
 // Удаление лишних пробелов из некоторых данных 
 
 using namespace std;
@@ -22,6 +23,7 @@ private:
     string year;
 
     string entrance_year; // Year of entrance
+    string entrance_year_copy;
 
     string faq_kaf;
     string group;
@@ -36,7 +38,6 @@ private:
 
     string str;
 
-    // Переменные для сравнения
     string men;
     string woomen;
 
@@ -61,73 +62,74 @@ public:
     //void operator =(int cnt) { index = index + cnt; };
 
 
-    void set_variables(int cnt) {
-        //setlocale(LC_ALL, "ru_RU.utf-8");
+    void set_variables(int cnt) 
+    {
         this->index = index + cnt;
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
         cout << "Введите ФИО:" << endl;
         //cin.get();
-        getline(cin, name);
+        getline(cin, this->name);
+        name = replace_spaces(name);
 
         while (true) {
             try {
                 system("cls");
                 cout << "----------------Добавление записи о студенте-----------------" << endl;
-                fflush(stdin); //Очистить буфер ввода
+                fflush(stdin); 
                 cout << "Дата Месяц Год рождения (через пробел)" << endl;
                 cin >> this->day >> this->mounth >> this->year;
                 stoi(day); stoi(mounth); stoi(year);
+                day = replace_spaces(day);
+                mounth = replace_spaces(mounth);
+                year = replace_spaces(year);
 
                 system("cls");
                 cout << "----------------Добавление записи о студенте-----------------" << endl;
-                fflush(stdin); //Очистить буфер ввода
+                fflush(stdin); 
                 cout << "Год поступления" << endl;
-                cin >> this->entrance_year;
-                stoi(entrance_year);
+                cin.get();
+                getline(cin, entrance_year);
+
+
                 if ((stoi(day) <= 31) && (stoi(mounth) <= 12) && (stoi(year) > 0) && (stoi(day) > 0) && (stoi(mounth) > 0) && (stoi(year) < 9999) && (stoi(entrance_year) > 0) && (stoi(entrance_year) > stoi(year))) {
                     break;
                 }
-                else {
-                    cout << endl << "Введены некорректные данные, попробуйте еще раз" << endl;
-                }
             }
-            catch (...) {
-                cout << endl << "Ошибка при вводе, попробуйте еще раз" << endl;
-            }
+            catch (...) {}
         }
 
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
-        fflush(stdin); //Очистить буфер ввода
+        fflush(stdin); 
         cout << "Факультет, кафедра" << endl;
-        cin.get();
         getline(cin, faq_kaf);
+        faq_kaf = replace_spaces(faq_kaf);
 
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
-        fflush(stdin); //Очистить буфер ввода
-        cout << "Группа" << endl;
+        fflush(stdin); 
+        cout << "Группа:" << endl;
         getline(cin, group);
+        group = replace_spaces(group);
 
 
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
-        fflush(stdin); //Очистить буфер ввода
-        cout << "Номер зачётной книжки" << endl;
+        fflush(stdin); 
+        cout << "Номер зачётной книжки:" << endl;
         getline(cin, gradebook);
+        gradebook = replace_spaces(gradebook);
 
         while (true) {
             system("cls");
             cout << "----------------Добавление записи о студенте-----------------" << endl;
-            fflush(stdin); //Очистить буфер ввода
-            cout << "Пол (м/ж)" << endl;
+            fflush(stdin); 
+            cout << "Пол (м/ж):" << endl;
             cin >> this->gender;
-            if (gender == men || gender == woomen) {
+            if (gender == men || gender == woomen) // Есть возможность добавить перегрузку
+            {
                 break;
-            }
-            else {
-                cout << endl << "Введите корректные данные - м/ж";
             }
         }
     }
@@ -140,9 +142,7 @@ public:
 
 
     string return_values() {
-        return to_string(index) + ' ' + name + ' ' + day + ' ' + mounth + ' ' + year + ' ' + entrance_year + ' ' +
+        return to_string(index) + ' ' + name + ' ' + day + '.' + mounth + '.' + year + ' ' + to_string(stoi(entrance_year)) + ' ' +
             faq_kaf + ' ' + group + ' ' + gradebook + ' ' + gender;
     }
-
-    friend class File_reading;
 };
