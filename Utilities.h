@@ -11,3 +11,9 @@ string replace_spaces(string data)
     replace(begin(data), end(data), ' ', '-');
     return data;
 }
+
+string replace_dash(string data)
+{
+    replace(begin(data), end(data), '-', ' ');
+    return data;
+}
