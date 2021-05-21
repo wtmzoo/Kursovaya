@@ -4,17 +4,29 @@
 #include <fstream>
 
 
-
 using namespace std;
 
 class File {
 public:
     int last_index;
     int line_index;
+    string path;
 
+    File()
+    {
+        path = "db_students.txt";
+    }
+
+    /*
+    void bufferCleaner()
+    {
+        cin.clear(); // на случай, если предыдущий ввод завершился с ошибкой
+        cin.ignore('\n');
+        //while (getchar() != '\n');
+    }
+    */
 
     void write_file(string str) {
-        string path = "db_students.txt";
         fstream f_out_test(path);
 
         if (!(f_out_test.is_open())) {
@@ -78,9 +90,11 @@ public:
                 }
             }
             for (int j = 0; j < stoi(kolich_predm); j++) {
+                cin.clear();
+                cin.ignore();
                 object = obj_return();
                 val = val_return();
-                str_values = "Сессия#" + to_string(i + 1) + ":" + object + ":" + val;
+                str_values = "Сессия#" + to_string(i + 1) + ": " + object + " " + val;
                 write_file(str_values);
             }
             system("cls");
@@ -91,16 +105,12 @@ public:
     }
 
     string obj_return() {
-        string object; // Предмет
+        string object;
 
         while (true) {
             cout << endl << "Введите предмет: ";
             try
             {
-                // Ошибка при второй итерации: игнорируется первая буква
-
-                cin.clear(); // на случай, если предыдущий ввод завершился с ошибкой
-                cin.ignore();
                 getline(cin, object);
                 return object;
             }
@@ -114,20 +124,21 @@ public:
     }
 
     string val_return() {
-        string value; // Оценка
+        string value;
 
         while (true) {
             cout << "Введите оценку по предмету: ";
             try 
             {
                 getline(cin, value);
+
                 if (stoi(value) > 0 && stoi(value) <= 5) 
                 {
                     return value;
                 }
                 else 
                 {
-                    cout << endl << "Введена неправильная оценка, попробуйте еще раз ввести для того же предмета" << endl;
+                    cout << endl << "Введена неправильная оценка, попробуйте еще раз" << endl;
                 }
             }
             catch (...) 
@@ -139,14 +150,13 @@ public:
 
     void read_file() {
         string str;
-        string path = "db_students.txt";
         ifstream f_in;
         f_in.open(path);
         cout << endl << "READED FILE: " << endl << endl;
 
         if (!(f_in.is_open())) 
         {
-            cout << "Ошибка при открытии файла(2)!\n";
+            cout << "Ошибка при открытии файла!\n";
         }
         else 
         {
@@ -162,7 +172,6 @@ public:
     }
 
     int return_value_index() {
-        string path = "db_students.txt";
         ifstream f_in;
         f_in.open(path);
         if (f_in.peek() == EOF) {

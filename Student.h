@@ -25,7 +25,9 @@ private:
     string entrance_year; // Year of entrance
     string entrance_year_copy;
 
-    string faq_kaf;
+    string faq;
+    string kaf;
+
     string group;
     string gradebook;
     string gender;
@@ -45,7 +47,8 @@ public:
     Student() {
         this->index = 0;
         this->name = "0";
-        this->faq_kaf = "0";
+        this->faq = "0";
+        this->kaf = "0";
         this->group = "0";
         this->gradebook = "0";
         this->object = "0";
@@ -102,9 +105,16 @@ public:
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
         fflush(stdin); 
-        cout << "Факультет, кафедра" << endl;
-        getline(cin, faq_kaf);
-        faq_kaf = replace_spaces(faq_kaf);
+        cout << "Факультет" << endl;
+        getline(cin, faq);
+        faq = replace_spaces(faq);
+
+        system("cls");
+        cout << "----------------Добавление записи о студенте-----------------" << endl;
+        fflush(stdin);
+        cout << "Кафедра" << endl;
+        getline(cin, kaf);
+        kaf = replace_spaces(kaf);
 
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
@@ -127,6 +137,7 @@ public:
             fflush(stdin); 
             cout << "Пол (м/ж):" << endl;
             cin >> this->gender;
+            fflush(stdin);
             if (gender == men || gender == woomen) // Есть возможность добавить перегрузку
             {
                 break;
@@ -136,13 +147,13 @@ public:
 
 
     void print_student_data() {
-        cout << endl << index << " " << name << " " << day << " " << mounth << " " << year << " " << entrance_year << " " << faq_kaf << " " << group << " " << gradebook 
+        cout << endl << index << " " << name << " " << day << " " << mounth << " " << year << " " << entrance_year << " " << faq << " " << kaf << " " << group << " " << gradebook 
             << " " << gender << endl;
     }
 
 
     string return_values() {
         return to_string(index) + ' ' + name + ' ' + day + '.' + mounth + '.' + year + ' ' + to_string(stoi(entrance_year)) + ' ' +
-            faq_kaf + ' ' + group + ' ' + gradebook + ' ' + gender;
+            faq + ' ' + kaf + ' ' + group + ' ' + gradebook + ' ' + gender;
     }
 };

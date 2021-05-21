@@ -3,6 +3,9 @@
 #include <algorithm>
 
 string replace_spaces(string data);
+string replace_dash(string data);
+
+
 
 using namespace std;
 

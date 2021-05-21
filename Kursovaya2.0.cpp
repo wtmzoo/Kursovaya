@@ -51,8 +51,7 @@ int main()
         case 6: programm_exit();
 
 
-        default:
-            break;
+        default: system("cls"); break;
         }
     }
 };
