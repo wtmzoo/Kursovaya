@@ -17,14 +17,6 @@ public:
         path = "db_students.txt";
     }
 
-    /*
-    void bufferCleaner()
-    {
-        cin.clear(); // на случай, если предыдущий ввод завершился с ошибкой
-        cin.ignore('\n');
-        //while (getchar() != '\n');
-    }
-    */
 
     void write_file(string str) {
         fstream f_out_test(path);

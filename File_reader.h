@@ -5,10 +5,11 @@
 #include <sstream>
 #include "Menu.h"
 #include "Utilities.h"
+#include "Student_data.h"
 
 
 using namespace std;
-class File_reader 
+class File_reader : public StudentData
 {
 public:
     int counter_sessions = 0;
@@ -30,22 +31,6 @@ public:
 
     string date;
 
-    string day; 
-    string mounth;
-    string year;
-
-    string entrance_year;
-
-    string faq;
-
-    string kaf; 
-
-    string group;
-
-    string gradebook;
-
-    string gender;
-
     string session;
     string object;
     string value;
@@ -53,10 +38,6 @@ public:
     char sessions[90][200];
     char objects[90][200];
     char values[90][200];
-
-    string men;
-    string woomen;
-
 
     File_reader()
     {
@@ -103,6 +84,7 @@ public:
             cout << "Не удалось открыть файл!\n";
             Sleep(4000);
             f_out_test.close();
+            return 0;
         }
         else
         {
@@ -111,6 +93,7 @@ public:
             int end = 0;
             fstream f_text(path);
             while (getline(f_text, str)) {
+                f_out_test.close();
                 start++;
 
                 if (!(size(str) == 1))
@@ -153,7 +136,7 @@ public:
                 }
             }
             f_text.close();
-
+            return 1;
         }
     }
 
@@ -186,7 +169,6 @@ public:
             }
         }
 
-        string choice;
         flag = 0;
         for (;;)
         {
@@ -234,21 +216,7 @@ public:
             cout << endl << "11. Удалить данные о студенте";
             cout << endl << "12. Выход в главное меню" << endl;
 
-            while (true)
-            {
-                try
-                {
-                    fflush(stdin);
-                    getline(cin, choice);
-                    if (stoi(choice))
-                    {
-                        break;
-                    }
-                }
-                catch (...) {}
-            }
-
-            switch (stoi(choice))
+            switch (ValidMenuInput())
             {
                 case 1: change_name();  break;
                 case 2: change_date();  break;
@@ -307,22 +275,7 @@ public:
                 cout << endl << "3.  Изменить оценку";
                 cout << endl << "4.  Выйти на уровень вверх" << endl;
 
-                string choice;
-                while (true)
-                {
-                    try
-                    {
-                        fflush(stdin);
-                        getline(cin, choice);
-                        if (stoi(choice))
-                        {
-                            break;
-                        }
-                    }
-                    catch (...) {}
-                }
-
-                switch (stoi(choice))
+                switch (ValidMenuInput())
                 {
                     case 1: 
                     {
@@ -580,6 +533,12 @@ public:
                 overwriting_file << str << endl;
             }
             modified_file.close();
+
+            try
+            {
+                remove("db_modified.txt");
+            }
+            catch (...) {}
         }
     }
     

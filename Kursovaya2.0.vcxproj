@@ -146,7 +146,9 @@
     <ClInclude Include="File_reader.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Student.h" />
+    <ClInclude Include="Student_data.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Var83.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="db_modified.txt" />
