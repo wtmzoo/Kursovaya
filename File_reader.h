@@ -25,35 +25,26 @@ public:
     string str_marks;
 
     string index;
-    string index2;
 
     string name;
-    string name2;
 
     string date;
-    string date2;
 
     string day; 
     string mounth;
     string year;
 
     string entrance_year;
-    string entrance_year2;
 
     string faq;
-    string faq2;
 
     string kaf; 
-    string kaf2;
 
     string group;
-    string group2;
 
     string gradebook;
-    string gradebook2;
 
     string gender;
-    string gender2;
 
     string session;
     string object;
@@ -100,10 +91,7 @@ public:
                 getline(cin, id_for_search);
                 return stoi(id_for_search);
             }
-            catch (...)
-            {
-                cout << endl << "-----------Введите действительное значение (число)-----------" << endl;
-            }
+            catch (...){}
         }
     }
 
@@ -113,6 +101,7 @@ public:
 
         if (!(f_out_test.is_open())) {
             cout << "Не удалось открыть файл!\n";
+            Sleep(4000);
             f_out_test.close();
         }
         else
@@ -230,7 +219,6 @@ public:
                 }
             }
             
-
 
             cout << endl << "----------------Изменение записей о студентах----------------";
             cout << endl << "1.  ФИО";
@@ -509,7 +497,7 @@ public:
             fflush(stdin);
             cout << "Пол (м/ж):" << endl;
             cin >> this->gender; 
-            if (gender == men || gender == woomen) // Есть возможность добавить перегрузку
+            if (gender == men || gender == woomen)
             {
                 break;
             }

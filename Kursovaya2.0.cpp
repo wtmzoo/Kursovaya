@@ -17,7 +17,6 @@ int main()
     SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
     SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
 
-    File* Cur = new File;
     string str;
 
     for (;;) {
@@ -44,9 +43,10 @@ int main()
         case 2: 
         {
             work->menu();
+            delete work;
             break;
         }
-        case 3: Cur->read_file(); break;
+        case 3: Cur->read_file(); delete Cur;  break;
         case 5: system("cls"); break;
         case 6: programm_exit();
 

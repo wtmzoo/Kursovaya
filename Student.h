@@ -8,21 +8,18 @@
 #include "Utilities.h"
 
 
-// Удаление лишних пробелов из некоторых данных 
-
 using namespace std;
 class Student : public File {
 private:
-    int index; // Number of student
+    int index;
 
-    string name; // ФИО
+    string name;
 
-    // Birthday Date/Mounth/Year
     string day;
     string mounth;
     string year;
 
-    string entrance_year; // Year of entrance
+    string entrance_year;
     string entrance_year_copy;
 
     string faq;
@@ -33,10 +30,10 @@ private:
     string gender;
     string gender2;
 
-    string object; // University objects (math, bio...)
+    string object;
 
 
-    string value; // Ratings
+    string value;
 
     string str;
 
@@ -71,7 +68,6 @@ public:
         system("cls");
         cout << "----------------Добавление записи о студенте-----------------" << endl;
         cout << "Введите ФИО:" << endl;
-        //cin.get();
         getline(cin, this->name);
         name = replace_spaces(name);
 
@@ -138,7 +134,7 @@ public:
             cout << "Пол (м/ж):" << endl;
             cin >> this->gender;
             fflush(stdin);
-            if (gender == men || gender == woomen) // Есть возможность добавить перегрузку
+            if (gender == men || gender == woomen)
             {
                 break;
             }

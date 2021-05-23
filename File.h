@@ -200,7 +200,7 @@ public:
 
             char return_index;
             f_in.get(return_index);
-            int i = (int)return_index - 48; // ASCII (Цифры начинаются с 48 в таблице ASCII)
+            int i = (int)return_index - 48;
             f_in.close();
             try {
                 return i + 1;
