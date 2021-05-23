@@ -40,5 +40,8 @@
     <Text Include="db_students.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
+    <Text Include="db_modified.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

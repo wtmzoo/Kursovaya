@@ -13,26 +13,47 @@ class File_reader
 public:
     int counter_sessions = 0;
     
+    int num_lines_start = 0;
+    int num_lines_end = 0;
+
+    string main_string;
+    string main_data;
+
+    string mod_file;
     string path;
     string str;
     string str_marks;
 
     string index;
+    string index2;
 
     string name;
+    string name2;
 
     string date;
+    string date2;
+
     string day; 
     string mounth;
     string year;
 
     string entrance_year;
+    string entrance_year2;
 
     string faq;
+    string faq2;
+
     string kaf; 
+    string kaf2;
+
     string group;
+    string group2;
+
     string gradebook;
+    string gradebook2;
+
     string gender;
+    string gender2;
 
     string session;
     string object;
@@ -58,6 +79,7 @@ public:
             }
         }
 
+        mod_file = "db_modified.txt";
         path = "db_students.txt";
         men = "м";
         woomen = "ж";
@@ -95,9 +117,13 @@ public:
         }
         else
         {
-
+            int lines = 0;
+            int start = 0;
+            int end = 0;
             fstream f_text(path);
-            while (getline(f_text, str)) { 
+            while (getline(f_text, str)) {
+                start++;
+
                 if (!(size(str) == 1))
                 {
                     if (str.find("Сессия"))
@@ -108,26 +134,30 @@ public:
 
                         if (stoi(index) == id_for_search)
                         {
-                            if (mode == 1)
+                            main_string = str;
+                            if (num_lines_start == 0) num_lines_start = start;
+                            int i = 0;
+                            counter_sessions = 0;
+                            while (getline(f_text, str_marks))
                             {
-                                int i = 0;
-                                while (getline(f_text, str_marks))
+                                if (size(str_marks) == 1)
                                 {
-                                    if (size(str_marks) == 1)
-                                    {
-                                        break;
-                                    }
-                                    istringstream ss2(str_marks);
-                                    ss2 >> session >> object >> value;
-                                    ws(ss2);
-                                    cout << endl << session << " " << object << " " << value;
-                                    strcpy_s(sessions[i], session.c_str());
-                                    strcpy_s(objects[i], object.c_str());
-                                    strcpy_s(values[i], value.c_str());
-                                    i++;
-                                    counter_sessions++;
+                                    break;
                                 }
-                            }
+                                istringstream ss2(str_marks);
+                                ss2 >> session >> object >> value;
+                                ws(ss2);
+                                if (mode == 1)
+                                {
+                                    cout << endl << session << " " << object << " " << value;
+                                }
+                                strcpy_s(sessions[i], session.c_str());
+                                strcpy_s(objects[i], object.c_str());
+                                strcpy_s(values[i], value.c_str());
+                                i++;
+                                counter_sessions++;
+                                }
+                            
                             return 1;
                         }
                     }
@@ -174,8 +204,8 @@ public:
             system("cls");
             int flag_for = 0;
             cout << "----------------Изменение записей о студентах----------------";
-            cout << endl << "Введённый ID: " << id_for_search;
-            cout << endl << "-------------------------------------------------------------";
+            cout << endl << "Введённый ID: " << id_for_search << endl;
+            cout << "-----------------------Данные о студенте---------------------";
             cout << endl << index << ' ' << name << ' ' << date << ' ' << entrance_year << ' ' << faq
                 << ' ' << kaf << ' ' << group
                 << ' ' << gradebook << ' ' << gender;
@@ -189,23 +219,32 @@ public:
                 cout << endl;
                 for (int i = 0; i < counter_sessions; i++)
                 {
-                    cout << sessions[i] << " " << objects[i] << " " << values[i] << endl;
+                    if (i == counter_sessions-1)
+                    {
+                        cout << sessions[i] << " " << objects[i] << " " << values[i];
+                    }
+                    else
+                    {
+                        cout << sessions[i] << " " << objects[i] << " " << values[i] << endl;
+                    }
                 }
             }
             
 
 
-            cout << endl << "-------------------------------------------------------------";
-            cout << endl << "1.  Изменить: ФИО";
-            cout << endl << "2.  Изменить: Дата рождения";
-            cout << endl << "3.  Изменить: Год поступления";
-            cout << endl << "4.  Изменить: Факультет";
-            cout << endl << "5.  Изменить: Кафедра";
-            cout << endl << "6.  Изменить: Группа";
-            cout << endl << "7.  Изменить: Номер зачетки";
-            cout << endl << "8.  Изменить: Пол";
-            cout << endl << "9.  Изменить: Предметы и оценки за семестр";
-            cout << endl << "10. Выход:    Выход в главное меню" << endl;
+            cout << endl << "----------------Изменение записей о студентах----------------";
+            cout << endl << "1.  ФИО";
+            cout << endl << "2.  Дата рождения";
+            cout << endl << "3.  Год поступления";
+            cout << endl << "4.  Факультет";
+            cout << endl << "5.  Кафедра";
+            cout << endl << "6.  Группа";
+            cout << endl << "7.  Номер зачетки";
+            cout << endl << "8.  Пол";
+            cout << endl << "9.  Предметы и оценки за семестр";
+            cout << endl << "10. Запись данных в файл";
+            cout << endl << "11. Удалить данные о студенте";
+            cout << endl << "12. Выход в главное меню" << endl;
 
             while (true)
             {
@@ -232,7 +271,9 @@ public:
                 case 7: change_gradebook();  break;
                 case 8: change_gender(); break;
                 case 9: if (counter_sessions != 0) { change_object_marks(id_for_search); } break;
-                case 10: system("cls"); flag_for++; break;
+                case 10: replace_lines(id_for_search); break;
+                case 11: break;
+                case 12: system("cls"); flag_for++; break;
 
                 default: break;
             }
@@ -306,13 +347,13 @@ public:
                             {
                                 fflush(stdin);
                                 getline(cin, new_num_sess);
-                                if (stoi(new_num_sess))
+                                if (stoi(new_num_sess) && stoi(new_num_sess) > 0 && stoi(new_num_sess) <= 9)
                                 {
                                     strcpy_s(sessions[stoi(num_session)-1], ("Сессия#" + new_num_sess + ":").c_str());
                                     break;
                                 }
                             }
-                            catch (...) { cout << "что-то пошло не по плану)))";  }
+                            catch (...) {}
                         }
                         break;
                     }
@@ -327,10 +368,10 @@ public:
                             {
                                 fflush(stdin);
                                 getline(cin, new_object);
-                                strcpy_s(objects[stoi(num_session)-1], new_object.c_str());
+                                strcpy_s(objects[stoi(num_session) - 1], new_object.c_str());
                                 break;
                             }
-                            catch (...) { cout << "что-то пошло не по плану)))"; }
+                            catch (...) {}
                         }
                         break;
                     }
@@ -345,10 +386,13 @@ public:
                             {
                                 fflush(stdin);
                                 getline(cin, new_value);
-                                strcpy_s(values[stoi(num_session) - 1], new_value.c_str());
-                                break;
+                                if (stoi(new_value) > 0 && stoi(new_value) <= 5)
+                                {
+                                    strcpy_s(values[stoi(num_session) - 1], new_value.c_str());
+                                    break;
+                                }
                             }
-                            catch (...) { cout << "что-то пошло не по плану)))"; }
+                            catch (...) {}
                         }
                         break;
                     }
@@ -420,6 +464,7 @@ public:
         cout << "Введите новый факультет:" << endl;
         fflush(stdin);
         getline(cin, faq);
+        faq= replace_spaces(faq);
         fflush(stdin);
     }
 
@@ -430,6 +475,7 @@ public:
         cout << "Введите новую кафедру:" << endl;
         fflush(stdin);
         getline(cin, kaf);
+        kaf = replace_spaces(kaf);
         fflush(stdin);
     }
 
@@ -440,6 +486,7 @@ public:
         cout << "Введите новую группу:" << endl;
         fflush(stdin);
         getline(cin, group);
+        group = replace_spaces(group);
         fflush(stdin);
     }
 
@@ -450,6 +497,7 @@ public:
         cout << "Введите новую зачетку:" << endl;
         fflush(stdin);
         getline(cin, gradebook);
+        gradebook = replace_spaces(gradebook);
         fflush(stdin);
     }
 
@@ -467,4 +515,84 @@ public:
             }
         }
     }
+    
+    void replace_lines(int id_for_search)
+    {
+        string all_text;
+        string modified_student;
+        modified_student = index + " " + name + " " + date + " " + entrance_year + " " + faq + " " + kaf + " " + group + " " + gradebook + " " + gender;
+         
+        try
+        {
+            remove("db_modified.txt");
+        }
+        catch (...) {}
+
+        ofstream create(mod_file);
+        create.close();
+
+        fstream overwriting_file(path);
+        fstream modified_file(mod_file);
+
+        if (!(overwriting_file.is_open()) || !(modified_file.is_open())) {
+            cout << "Не удалось открыть файл!\n";
+            Sleep(4000);
+            overwriting_file.close();
+            modified_file.close();
+        }
+        else
+        {
+            int i = 0;
+            int flag = 0;
+            while (getline(overwriting_file, str))
+            {
+                i++;
+                if (str.length() != 1)
+                {
+                    if (i >= num_lines_start && i <= (num_lines_start + counter_sessions) && flag == 0)
+                    {
+                        modified_file << modified_student << endl;
+                        for (int j = 0; j < (counter_sessions); j++)
+                        {
+                            modified_file << sessions[j] << " " << objects[j] << " " << values[j] << endl;
+                        }
+                        flag = 1;
+                    }
+                    else
+                    {
+                        if (i > (num_lines_start + counter_sessions) || i < num_lines_start)
+                        {
+                            modified_file << str << endl;
+                        }
+                    }
+                }
+                else
+                {
+                    modified_file << str << endl; 
+                }
+            }
+            modified_file.close();
+
+            overwriting_file.close();
+
+            try
+            {
+                remove("db_students.txt");
+            }
+            catch (...) {}
+
+            ofstream create(path);
+            create.close();
+
+            fstream overwriting_file(path);
+            fstream modified_file(mod_file);
+
+            while (getline(modified_file, str))
+            {
+                overwriting_file << str << endl;
+            }
+            modified_file.close();
+        }
+    }
+    
 };
