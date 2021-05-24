@@ -50,12 +50,17 @@ private:
         this->object = "0";
         this->value = "0";
 
-
         this->men = "ì";
         this->woomen = "æ";
     }
 
+    ~StudentData() {}
+
 private:
+    virtual string return_values() 
+    {
+        return to_string(index) + ' ' + name;
+    }
     void set_variables(int cnt)
     {
         this->index = index + cnt;

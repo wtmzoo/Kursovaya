@@ -25,7 +25,7 @@ public:
     }
 
 
-    string return_values() {
+    virtual string return_values() {
         return to_string(index) + ' ' + name + ' ' + day + '.' + mounth + '.' + year + ' ' + to_string(stoi(entrance_year)) + ' ' +
             faq + ' ' + kaf + ' ' + group + ' ' + gradebook + ' ' + gender;
     }

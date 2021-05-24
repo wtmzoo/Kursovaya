@@ -26,7 +26,7 @@ int main()
             Student* Current = new Student;
             File* Cur = new File;
             File_reader* work = new File_reader;
-            cnt = Cur->return_value_index();
+            cnt = Cur->last_line() + 1;
             Current->make(cnt);
             Current->print_student_data();
             str = Current->return_values();
@@ -58,8 +58,17 @@ int main()
             worker->menu(); 
             break; 
         }
-        case 5: system("cls"); break;
-        case 6: programm_exit();
+        case 5: 
+        {
+            system("cls");
+            File* Cur = new File; 
+            Cur->pull_data(); 
+            delete Cur;
+            cout << "Информация успешно импортирована" << endl;
+            break;
+        }
+        case 6: system("cls"); break;
+        case 7: programm_exit();
 
         default: system("cls"); break;
         }

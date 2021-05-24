@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <exception>
 
 
 using namespace std;
@@ -11,13 +12,38 @@ public:
     int last_index;
     int line_index;
     string path;
+    string pull;
 
     File()
     {
         path = "db_students.txt";
+        pull = "pull_data.txt";
     }
 
+    void pull_data()
+    {
+        string str_copy;
+        try
+        {
+            remove("db_students.txt");
+        }
+        catch (...) {}
 
+        ofstream create(path);
+        create.close();
+
+        fstream main(path);
+        fstream data(pull);
+
+        while (getline(data, str_copy))
+        {
+            main << str_copy << endl;
+        }
+        main.close();
+        data.close();
+    }
+
+    
     void write_file(string str) {
         fstream f_out_test(path);
 
@@ -64,7 +90,7 @@ public:
                 cout << "Введены неправильные данные, попробуйте еще раз!";
             }
         }
-        last_index = return_value_index();
+        last_index = last_line();
         for (int i = 0; i < stoi(kolich_sessiy); i++) {
             while (true) {
                 system("cls");
@@ -90,9 +116,8 @@ public:
                 write_file(str_values);
             }
             system("cls");
-        }
-
-        write_file(to_string(last_index - 1));
+        } 
+        write_file(to_string(last_index));
 
     }
 
@@ -163,44 +188,15 @@ public:
         f_in.close();
     }
 
-    int return_value_index() {
-        ifstream f_in;
-        f_in.open(path);
-        if (f_in.peek() == EOF) {
-            f_in.close();
-            return 1;
-        }
-
-        if (f_in.is_open()) {
-            f_in.seekg(-1, ios_base::end);                // go to one spot before the EOF
-
-            bool keepLooping = true;
-            while (keepLooping) {
-                char ch;
-                f_in.get(ch);                            // Get current byte data
-                if ((int)f_in.tellg() <= 1) {             // If the data was at or before the 0th byte
-                    f_in.seekg(0);                       // The first line is the last line
-                    keepLooping = false;                // So stop there
-                }
-                else if (ch == '\n') {                   // If the data was a newline
-                    keepLooping = false;                // Stop at the current position.
-                }
-                else {                                  // If the data was neither a newline nor at the 0 byte
-                    f_in.seekg(-2, ios_base::cur);        // Move to the front of that data, then to the front of the data before it
-                }
-            }
-
-            char return_index;
-            f_in.get(return_index);
-            int i = (int)return_index - 48;
-            f_in.close();
-            try {
-                return i + 1;
-            }
-            catch (...) {
-                cout << "Ошибка в выводе последнего индекса из файла";
-            }
-        }
-        return 0;
-    };
+    int last_line()
+    {
+        std::ifstream inp(path.c_str());
+        if (!inp.is_open())
+            throw std::exception();
+        std::string str = "";
+        std::string buf;
+        while (std::getline(inp, buf, '\n'))
+            str = buf;
+        return stoi(str);
+    }
 };

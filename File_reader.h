@@ -27,8 +27,6 @@ public:
 
     string index;
 
-    string name;
-
     string date;
 
     string session;
@@ -38,6 +36,10 @@ public:
     char sessions[90][200];
     char objects[90][200];
     char values[90][200];
+
+    char sessions_cop[90][200];
+    char objects_cop[90][200];
+    char values_cop[90][200];
 
     File_reader()
     {
@@ -213,8 +215,9 @@ public:
             cout << endl << "8.  Пол";
             cout << endl << "9.  Предметы и оценки за семестр";
             cout << endl << "10. Запись данных в файл";
-            cout << endl << "11. Удалить данные о студенте";
-            cout << endl << "12. Выход в главное меню" << endl;
+            cout << endl << "11. Добавить запись о сессии";
+            cout << endl << "12. Удалить данные о сесии";
+            cout << endl << "13. Выход в главное меню" << endl;
 
             switch (ValidMenuInput())
             {
@@ -228,13 +231,133 @@ public:
                 case 8: change_gender(); break;
                 case 9: if (counter_sessions != 0) { change_object_marks(id_for_search); } break;
                 case 10: replace_lines(id_for_search); break;
-                case 11: break;
-                case 12: system("cls"); flag_for++; break;
+                case 11: add_session(); break;
+                case 12: del_session(); break;
+                case 13: system("cls"); flag_for++; break;
 
                 default: break;
             }
             if (flag_for != 0) break;
         }
+    }
+
+    void del_session()
+    {
+        string q;
+        while (true)
+        {
+            try
+            {
+                system("cls");
+                cout << "Введите номер строки для удаления: " << endl;
+                fflush(stdin);
+                getline(cin, q);
+                if (stoi(q) && stoi(q) <= counter_sessions && stoi(q) > 0)
+                {
+                    for (int j = 0; j < 200; j++)
+                    {
+                        sessions[stoi(q)-1][j] = 0;
+                        objects[stoi(q)-1][j] = 0;
+                        values[stoi(q)-1][j] = 0;
+                    }
+                    for (int i = 0; i < 90; i++)
+                    {
+                        for (int j = 0; j < 200; j++)
+                        {
+                            if (i != (stoi(q) - 1))
+                            {
+                                sessions_cop[i][j] = sessions[i][j];
+                                objects_cop[i][j] = objects[i][j];
+                                values_cop[i][j] = values[i][j];
+                            }
+                            else
+                            {
+                                sessions_cop[i][j] = sessions[i-1][j];
+                                objects_cop[i][j] = objects[i-1][j];
+                                values_cop[i][j] = values[i-1][j];
+                            }
+                            
+                        }
+                    }
+
+                    for (int i = 0; i < 90; i++)
+                    {
+                        for (int j = 0; j < 200; j++)
+                        {
+                            sessions[i][j] = 0;
+                            objects[i][j] = 0;
+                            values[i][j] = 0;
+                        }
+                    }
+
+                    for (int i = 0; i < 90; i++)
+                    {
+                        for (int j = 0; j < 200; j++)
+                        {
+                            sessions[i][j] = sessions_cop[i][j];
+                            objects[i][j] = objects_cop[i][j];
+                            values[i][j] = values_cop[i][j];
+                        }
+                    }
+
+
+                    break;
+                }
+            }
+            catch (...) {}
+        }
+    }
+
+    void add_session()
+    {
+        string q;
+        while (true)
+        {
+            try
+            {
+                system("cls");
+                cout << "Введите номер сессии: " << endl;
+                fflush(stdin);
+                getline(cin, q);
+                if (stoi(q) && stoi(q) < 10 && stoi(q) > 0)
+                {
+                    q = "Сессия#" + q + ":";
+                    strcpy_s(sessions[counter_sessions], q.c_str());
+                    break;
+                }
+            }
+            catch (...) {}
+        }
+        while (true)
+        {
+            try
+            {
+                system("cls");
+                cout << "Введите предмет: " << endl;
+                fflush(stdin);
+                getline(cin, q);
+                strcpy_s(objects[counter_sessions], q.c_str());
+                break;
+            }
+            catch (...) {}
+        }
+        while (true)
+        {
+            try
+            {
+                system("cls");
+                cout << "Введите оценку за предмет: " << endl;
+                fflush(stdin);
+                getline(cin, q);
+                if (stoi(q) && stoi(q) > 0 && stoi(q) < 6)
+                {
+                    strcpy_s(values[counter_sessions], q.c_str());
+                    break;
+                }
+            }
+            catch (...) {}
+        }
+        counter_sessions++;
     }
 
     void change_object_marks(int id_for_search)
@@ -343,6 +466,11 @@ public:
             }
             catch (...) {}
         }
+    }
+
+    void delete_student()
+    {
+        
     }
 
     void change_name()
