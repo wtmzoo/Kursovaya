@@ -48,8 +48,11 @@ public:
             for (int j = 0; j < 200; j++)
             {
                 sessions[i][j] = 0;
+                sessions_cop[i][j] = 0;
                 objects[i][j] = 0;
+                objects_cop[i][j] = 0;
                 values[i][j] = 0;
+                values_cop[i][j] = 0;
             }
         }
 
@@ -216,8 +219,9 @@ public:
             cout << endl << "9.  Предметы и оценки за семестр";
             cout << endl << "10. Запись данных в файл";
             cout << endl << "11. Добавить запись о сессии";
-            cout << endl << "12. Удалить данные о сесии";
-            cout << endl << "13. Выход в главное меню" << endl;
+            cout << endl << "12. Удалить данные о студенте";
+            cout << endl << "13. Удалить данные об одной из сессий";
+            cout << endl << "14. Выход в главное меню" << endl;
 
             switch (ValidMenuInput())
             {
@@ -230,10 +234,11 @@ public:
                 case 7: change_gradebook();  break;
                 case 8: change_gender(); break;
                 case 9: if (counter_sessions != 0) { change_object_marks(id_for_search); } break;
-                case 10: replace_lines(id_for_search); break;
+                case 10: replace_lines(0); break;
                 case 11: add_session(); break;
-                case 12: del_session(); break;
-                case 13: system("cls"); flag_for++; break;
+                case 12: del_student(id_for_search); replace_lines(1);  replace_end(); flag_for++ ; break;
+                case 13: del_session(); replace_lines(1); replace_end();  flag_for++;  break;
+                case 14: system("cls"); flag_for++; break;
 
                 default: break;
             }
@@ -241,8 +246,108 @@ public:
         }
     }
 
-    void del_session()
+
+    void del_student(int id_for_search)
     {
+        string all_text;
+        string modified_student;
+
+        try
+        {
+            remove("db_modified.txt");
+        }
+        catch (...) {}
+
+        ofstream create(mod_file);
+        create.close();
+
+        fstream overwriting_file(path);
+        fstream modified_file(mod_file);
+
+        if (!(overwriting_file.is_open()) || !(modified_file.is_open())) {
+            cout << "Не удалось открыть файл!\n";
+            Sleep(4000);
+            overwriting_file.close();
+            modified_file.close();
+        }
+        else
+        {
+            int i = 0;
+            int flag = 0;
+            while (getline(overwriting_file, str))
+            {
+                i++;
+                if (str.length() != 1)
+                {
+                    if (i < num_lines_start || i > (num_lines_start + counter_sessions))
+                    {
+                        modified_file << str << endl;
+                    }
+                }
+                else
+                {
+                    if (stoi(str) != id_for_search)
+                    {
+                        modified_file << str << endl;
+                    }
+                }
+            }
+            modified_file.close();
+
+            overwriting_file.close();
+
+            try
+            {
+                remove("db_students.txt");
+            }
+            catch (...) {}
+
+            ofstream create(path);
+            create.close();
+
+            fstream overwriting_file(path);
+            fstream modified_file(mod_file);
+
+            while (getline(modified_file, str))
+            {
+                overwriting_file << str << endl;
+            }
+            modified_file.close();
+
+            try
+            {
+                remove("db_modified.txt");
+            }
+            catch (...) {}
+        }
+    }
+
+
+    void del_session2()
+    {
+        while (true)
+        {
+            try
+            {
+                for (int i = 0; i < 90; i++)
+                {
+                    for (int j = 0; j < 200; j++)
+                    {
+                        sessions[i][j] = 0;
+                        objects[i][j] = 0;
+                        values[i][j] = 0;
+                    }
+                }
+
+                break;
+            }
+            catch (...) {}
+        }
+    }
+
+    int del_session()
+    {
+        string IsValid;
         string q;
         while (true)
         {
@@ -256,56 +361,17 @@ public:
                 {
                     for (int j = 0; j < 200; j++)
                     {
-                        sessions[stoi(q)-1][j] = 0;
-                        objects[stoi(q)-1][j] = 0;
-                        values[stoi(q)-1][j] = 0;
+                        sessions[stoi(q) - 1][j] = 0;
+                        objects[stoi(q) - 1][j] = 0;
+                        values[stoi(q) - 1][j] = 0;
                     }
-                    for (int i = 0; i < 90; i++)
-                    {
-                        for (int j = 0; j < 200; j++)
-                        {
-                            if (i != (stoi(q) - 1))
-                            {
-                                sessions_cop[i][j] = sessions[i][j];
-                                objects_cop[i][j] = objects[i][j];
-                                values_cop[i][j] = values[i][j];
-                            }
-                            else
-                            {
-                                sessions_cop[i][j] = sessions[i-1][j];
-                                objects_cop[i][j] = objects[i-1][j];
-                                values_cop[i][j] = values[i-1][j];
-                            }
-                            
-                        }
-                    }
-
-                    for (int i = 0; i < 90; i++)
-                    {
-                        for (int j = 0; j < 200; j++)
-                        {
-                            sessions[i][j] = 0;
-                            objects[i][j] = 0;
-                            values[i][j] = 0;
-                        }
-                    }
-
-                    for (int i = 0; i < 90; i++)
-                    {
-                        for (int j = 0; j < 200; j++)
-                        {
-                            sessions[i][j] = sessions_cop[i][j];
-                            objects[i][j] = objects_cop[i][j];
-                            values[i][j] = values_cop[i][j];
-                        }
-                    }
-
-
+                    counter_sessions -= 1;
                     break;
                 }
             }
             catch (...) {}
         }
+        return stoi(q);
     }
 
     void add_session()
@@ -468,10 +534,6 @@ public:
         }
     }
 
-    void delete_student()
-    {
-        
-    }
 
     void change_name()
     {
@@ -585,7 +647,8 @@ public:
         }
     }
     
-    void replace_lines(int id_for_search)
+
+    void replace_lines(int mod)
     {
         string all_text;
         string modified_student;
@@ -611,6 +674,7 @@ public:
         }
         else
         {
+            string IsValid;
             int i = 0;
             int flag = 0;
             while (getline(overwriting_file, str))
@@ -618,22 +682,58 @@ public:
                 i++;
                 if (str.length() != 1)
                 {
-                    if (i >= num_lines_start && i <= (num_lines_start + counter_sessions) && flag == 0)
+                    if (mod == 0)
                     {
-                        modified_file << modified_student << endl;
-                        for (int j = 0; j < (counter_sessions); j++)
+                        if (i >= num_lines_start && i <= (num_lines_start + counter_sessions) && flag == 0)
                         {
-                            modified_file << sessions[j] << " " << objects[j] << " " << values[j] << endl;
+                            modified_file << modified_student << endl;
+                            for (int j = 0; j < (counter_sessions); j++)
+                            {
+                                IsValid += sessions[j];
+                                if (sessions[j] != 0 && sessions[j] != "0" && IsValid.length() != 0)
+                                {
+                                    modified_file << sessions[j] << " " << objects[j] << " " << values[j] << endl;
+                                }
+                            }
+                            flag = 1;
                         }
-                        flag = 1;
+                        else
+                        {
+                            if (i > (num_lines_start + counter_sessions) || i < num_lines_start)
+                            {
+                                modified_file << str << endl;
+                            }
+                        }
                     }
                     else
                     {
-                        if (i > (num_lines_start + counter_sessions) || i < num_lines_start)
+                        int line_del = 0;
+                        if (line_del != 0)
+                        {
+                            line_del = del_session();
+                        }
+                        if (i >= num_lines_start && i <= (num_lines_start + counter_sessions) && flag == 0)
                         {
                             modified_file << str << endl;
+                            for (int j = 0; j < (counter_sessions); j++)
+                            {
+                                IsValid += sessions[j];
+                                if (sessions[j] != 0 && sessions[j] != "0" && IsValid.length() != 0)
+                                {
+                                    modified_file << sessions[j] << " " << objects[j] << " " << values[j] << endl;
+                                }
+                            }
+                            flag = 1;
+                        }
+                        else
+                        {
+                            if (i > (num_lines_start + counter_sessions) || i < num_lines_start)
+                            {
+                                modified_file << str << endl;
+                            }
                         }
                     }
+                    
                 }
                 else
                 {
@@ -661,13 +761,52 @@ public:
                 overwriting_file << str << endl;
             }
             modified_file.close();
+            overwriting_file.close();
 
             try
             {
                 remove("db_modified.txt");
             }
             catch (...) {}
+
         }
+        replace_end();
     }
     
+    void replace_end()
+    {
+        string all_text;
+        string str_end;
+
+        try
+        {
+            remove("db_modified.txt");
+        }
+        catch (...) {}
+
+        fstream overwriting_file(path);
+        fstream modified_file(mod_file);
+
+        if (!(overwriting_file.is_open())) {
+            cout << "Не удалось открыть файл!\n";
+            Sleep(4000);
+            overwriting_file.close();
+            modified_file.close();
+        }
+        else
+        {
+            while (getline(overwriting_file, str_end))
+            {
+                if (str_end.length() != 0)
+                {
+                    modified_file << str << endl;
+                }
+            }
+
+
+            overwriting_file.close();
+            modified_file.close();
+        }
+    }
 };
+
