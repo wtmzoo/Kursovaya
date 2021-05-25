@@ -142,6 +142,7 @@
     <ClCompile Include="Kursovaya2.0.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crypt.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="File_reader.h" />
     <ClInclude Include="Menu.h" />

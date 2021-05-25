@@ -5,6 +5,7 @@
 #include "File.h"
 #include "File_reader.h"
 #include "Var83.h"
+#include "Crypt.h"
 
 
 using namespace std; 
@@ -12,9 +13,9 @@ using namespace std;
 int main()
 {
     int cnt = 0;
-    setlocale(LC_CTYPE, "rus"); // вызов функции настройки локализации
-    SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
-    SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+    setlocale(LC_CTYPE, "rus"); 
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
     string str;
 
@@ -68,7 +69,8 @@ int main()
             break;
         }
         case 6: system("cls"); break;
-        case 7: programm_exit();
+        case 7: start_crypt(); system("cls"); break;
+        case 8: programm_exit();
 
         default: system("cls"); break;
         }
