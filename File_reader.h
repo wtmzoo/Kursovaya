@@ -65,7 +65,6 @@ public:
     ~File_reader() {};
 
 
-
     int idValidInput()
     {
         string id_for_search;
@@ -146,6 +145,7 @@ public:
     }
 
 
+   
     void menu()
     {
         system("cls");

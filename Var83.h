@@ -168,8 +168,6 @@ public:
                                     }
                                     catch (...)
                                     {
-                                        cout << "ÏÈÇÄÀ ÊÎÒÅÍÊÓ" << endl;
-                                        Sleep(4000);
                                     }
                                    
                                 }

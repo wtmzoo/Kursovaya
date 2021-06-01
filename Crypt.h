@@ -183,7 +183,7 @@ BYTE* Crypt(const string& _str, DWORD* _outLength)
 
 BYTE* Decrypt(BYTE* _encryptedData, DWORD* _length)
 {
-    DWORD dwBufferLen = 0, cbKeyBlob = 0, cbSignature = 0/*,i*/;
+    DWORD dwBufferLen = 0, cbKeyBlob = 0, cbSignature = 0;
     LPBYTE pbBuffer = NULL, pbKeyBlob = NULL, pbSignature = NULL;
     HCRYPTPROV hProv = NULL;
     HCRYPTKEY hKey = NULL;

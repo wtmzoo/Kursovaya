@@ -57,10 +57,12 @@ private:
     ~StudentData() {}
 
 private:
+
     virtual string return_values() 
     {
         return to_string(index) + ' ' + name;
     }
+
     void set_variables(int cnt)
     {
         this->index = index + cnt;
@@ -123,8 +125,12 @@ private:
         cout << "----------------Добавление записи о студенте-----------------" << endl;
         fflush(stdin);
         cout << "Номер зачётной книжки:" << endl;
-        getline(cin, gradebook);
-        gradebook = replace_spaces(gradebook);
+        while (true)
+        {
+            getline(cin, gradebook);
+            gradebook = "20Б02" + replace_spaces(gradebook);
+            if (numStudentBookIsValid(gradebook)) break;
+        }
 
         while (true) {
             system("cls");
@@ -137,6 +143,45 @@ private:
             {
                 break;
             }
+        }
+    }
+
+    int numStudentBookIsValid(string st_book)
+    {
+        string date;
+        string path = "db_students.txt";
+        fstream f_out_test(path);
+
+        if (!(f_out_test.is_open()))
+        {
+            cout << "Не удалось открыть файл!\n";
+            Sleep(4000);
+            f_out_test.close();
+            return 0;
+        }
+        else
+        {
+            fstream f_text(path);
+            while (getline(f_text, str)) {
+                f_out_test.close();
+                if (!(size(str) == 1))
+                {
+                    if (str.find("Сессия"))
+                    {
+                        istringstream ss(str);
+                        ss >> index >> name >> date >> entrance_year >> faq >> kaf >> group >> gradebook >> gender;
+                        ws(ss);
+
+                        if (gradebook == st_book)
+                        {
+                            cout << "Студент с такой зачеткой уже присутствует в БД" << endl;
+                            return 0;
+                        }
+                    }
+                }
+            }
+            f_text.close();
+            return 1;
         }
     }
 
