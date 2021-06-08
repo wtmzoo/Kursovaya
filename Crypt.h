@@ -127,7 +127,6 @@ BYTE* Crypt(const string& _str, DWORD* _outLength)
     DWORD           derPubKeyLen = 2048;
     CERT_PUBLIC_KEY_INFO* publicKeyInfo;
     DWORD           publicKeyInfoLen;
-    HANDLE          hFile;
     HCRYPTPROV      hProv = 0;
     HCRYPTKEY       hKey = 0;
 

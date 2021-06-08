@@ -92,7 +92,8 @@ private:
                 getline(cin, entrance_year);
 
 
-                if ((stoi(day) <= 31) && (stoi(mounth) <= 12) && (stoi(year) > 0) && (stoi(day) > 0) && (stoi(mounth) > 0) && (stoi(year) < 9999) && (stoi(entrance_year) > 0) && (stoi(entrance_year) > stoi(year))) {
+                if ((stoi(day) <= 31) && (stoi(mounth) <= 12) && (stoi(year) > 1950) && (stoi(day) > 0) && (stoi(mounth) > 0) && (stoi(year) < 2100) && 
+                    (stoi(entrance_year) > 0) && (stoi(entrance_year) > stoi(year)) && (stoi(entrance_year) - stoi(year) > 16) && (stoi(entrance_year) - stoi(year) < 100)) {
                     break;
                 }
             }

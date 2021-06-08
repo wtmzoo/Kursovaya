@@ -7,7 +7,6 @@
 #include "Var83.h"
 #include "Crypt.h"
 
-
 using namespace std; 
 
 int main()
