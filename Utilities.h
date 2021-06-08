@@ -56,6 +56,16 @@ int numStudentBookIsValid(string st_book)
     string path = "db_students.txt";
     fstream f_out_test(path);
 
+    try
+    {
+        stoi(st_book);
+    }
+    catch (...)
+    {
+        return 0;
+    }
+
+
     if (!(f_out_test.is_open()))
     {
         cout << "Не удалось открыть файл!\n";
