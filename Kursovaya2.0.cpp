@@ -25,16 +25,24 @@ int main()
         {
             Student* Current = new Student;
             File* Cur = new File;
-            File_reader* work = new File_reader;
-            cnt = Cur->last_line() + 1;
+
+            try
+            {
+                cnt = Cur->last_line() + 1;
+            }
+            catch (...)
+            {
+                cnt = 1;
+            }
+
             Current->make(cnt);
             Current->print_student_data();
             str = Current->return_values();
             Cur->write_file(str);
             Cur->write_objects_values_to_file();
+
             delete Current; 
-            delete Cur;     
-            delete work;    
+            delete Cur;       
             break;
         }
         case 2: 
